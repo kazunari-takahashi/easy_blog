@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
@@ -31,5 +31,9 @@ module EasyBlog
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.time_zone = "Tokyo"
+    config.i18n.default_locale = :en
+    config.action_controller.include_all_helpers = false
   end
 end

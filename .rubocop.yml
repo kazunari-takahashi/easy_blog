@@ -1,0 +1,100 @@
+inherit_gem:
+  onkcop:
+    - "config/rubocop.yml"
+    - "config/rails.yml"
+    - "config/rspec.yml"
+
+AllCops:
+  TargetRubyVersion: 2.6
+  TargetRailsVersion: 6.0
+  Exclude:
+    - "lib/synvert/**/*.rb"
+    - "spec/lib/synvert/**/*.rb"
+    - "bin/webpack*"
+    - "node_modules/**/*"
+
+Capybara/FeatureMethods:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - "Gemfile"
+    - "admin/app/views/admin/*_csv.ruby"
+    - "admin/config/routes.rb"
+    - "admin/spec/**/*_factory.rb"
+    - "admin/spec/**/*_spec.rb"
+    - "admin/spec/*_helper.rb"
+    - "app/**/*.builder"
+    - "app/**/*.jbuilder"
+    - "biz/config/routes.rb"
+    - "biz/spec/**/*_spec.rb"
+    - "config/environments/**/*.rb"
+    - "config/routes.rb"
+    - "lib/tasks/**/*.rake"
+    - "spec/**/*_spec.rb"
+    - "spec/*_helper.rb"
+    - "spec/**/*_factory.rb"
+    - "bin/setup"
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Layout/IndentationWidth:
+  Width: 2
+
+Layout/DotPosition:
+  EnforcedStyle: "leading"
+
+RSpec/ExampleLength:
+  Exclude:
+    - "spec/features/**/*"
+    - "spec/system/**/*"
+    - "admin/spec/system/**/*"
+    - "biz/spec/system/**/*"
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - "spec/features/**/*"
+    - "admin/spec/features/**/*"
+    - "spec/system/**/*"
+    - "admin/spec/system/**/*"
+    - "biz/spec/system/**/*"
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/BeforeAfterAll:
+  Exclude:
+    - "spec/lib/tasks/**/*"
+
+RSpec/DescribeClass:
+  Exclude:
+    - "spec/lib/tasks/**/*"
+    - "spec/lib/configs/**/*"
+
+RSpec/MessageChain:
+  Enabled: false
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
