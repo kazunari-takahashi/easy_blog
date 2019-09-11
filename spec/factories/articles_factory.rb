@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :article do
     title { "MyString" }
-    boxy { "MyText" }
+    body { "MyText" }
     draft { false }
   end
 end

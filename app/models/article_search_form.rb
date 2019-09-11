@@ -7,14 +7,7 @@ class ArticleSearchForm
   validate :ensure_from_date, :ensure_to_date
 
   def articles
-    if valid?
-      article = Article.all
-      article = article.where("title like ?", "%#{title}%") unless title.blank?
-      article = article.where(created_at: from_date..to_date) unless from_date.blank? && to_date.blank?
-      article
-    else
-      Article.all
-    end
+    query.articles
   end
 
   def from_date
@@ -30,6 +23,15 @@ class ArticleSearchForm
   end
 
   private
+
+    def query
+      ArticleSearchQuery.new(params)
+    end
+
+    def params
+      return {} if invalid?
+      { from_date: from_date, to_date: to_date, title: title }
+    end
 
     def ensure_from_date
       ensure_date(@from_date, :from_date)

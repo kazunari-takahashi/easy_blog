@@ -1,27 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe ArticleSearchForm, type: :model do
-  describe "#article" do
+  describe "#articles" do
     let(:form) { ArticleSearchForm.new(attributes) }
-    let(:articles) { create_list(:article, 3, title: "検索対象") }
+    let(:query) { instance_spy(ArticleSearchQuery, articles: []) }
 
     before do
-      travel_to Time.zone.local(2019, 8, 10)
-      create(:article)
+      allow(ArticleSearchQuery).to receive(:new).with(args) { query }
+      form.articles
     end
 
-    after do
-      travel_back
+    context "valid?" do
+      let(:from_date) { "2019-08-01" }
+      let(:to_date) { "2019-08-31" }
+      let(:attributes) { { title: "検索対象", from_date: from_date, to_date: to_date} }
+      let(:args) { attributes.merge({from_date: from_date.to_time, to_date: to_date.to_time}) }
+
+      it { expect(query).to have_received(:articles).once }
     end
 
-    context "#valid?" do
-      let(:attributes) { { title: "検索対象", from_date: "2019-08-01", to_date:  "2019-08-31"} }
-      it {  expect(form.articles).to match_array(articles) }
-    end
-
-    context "#invalid?" do
+    context "invalid?" do
       let(:attributes) { { title: "検索対象" * 10 } }
-      it {  expect(form.articles).to match_array(Article.all) }
+      let(:args) { {} }
+
+      it { expect(query).to have_received(:articles).once }
     end
   end
 

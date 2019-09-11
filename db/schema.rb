@@ -10,12 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_10_044750) do
+ActiveRecord::Schema.define(version: 2019_09_10_044357) do
+
   create_table "articles", force: :cascade do |t|
     t.string "title"
-    t.text "boxy"
+    t.text "body"
     t.boolean "draft"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
+
 end
