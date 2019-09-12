@@ -33,50 +33,96 @@ RSpec.describe MaximumLengthValidator, type: :model do
       end
     end
   end
+
+  context "culomn がないの場合" do
+    let(:klass) do
+      Class.new do
+        include ActiveModel::Model
+        attr_accessor :title, :body
+        validates :body, maximum_length: { maximum: 10 }
+      end
+    end
+
+    let(:model) { klass.new(title: "a" * 10) }
+
+    it { expect(model).to be_invalid }
+  end
+
+  context "maximum がないの場合" do
+    let(:klass) do
+      Class.new do
+        include ActiveModel::Model
+        attr_accessor :title, :body
+        validates :body, maximum_length: true
+      end
+    end
+
+    let(:model) { klass.new(title: "a" * 10) }
+
+    it { expect(model).to be_invalid }
+  end
+
+  context "maximum がないの場合" do
+    let(:klass) do
+      Class.new do
+        include ActiveModel::Model
+        attr_accessor :title, :body
+        validates :body, maximum_length: { foo: nil }
+      end
+    end
+
+    let(:model) { klass.new(title: "a" * 10) }
+
+    it { expect(model).to be_invalid }
+  end
 end
 
 RSpec.describe MaximumLengthValidator::Validator, type: :model do
   describe "#value1" do
-    let(:validator) { MaximumLengthValidator::Validator.new(value, nil, nil) }
+    subject { validator.value1 }
+    let(:validator) { MaximumLengthValidator::Validator.new(nil, value,{}) }
 
     context "文字列の場合" do
       let(:value) { "a" * 3 }
-      it { expect(validator.value1).to eq value }
+      it { is_expected.to eq value }
     end
 
     context "数字の場合" do
       let(:value) { 1 }
-      it { expect(validator.value1).to eq "1" }
+      it { is_expected.to eq "1" }
     end
 
     context "nilの場合" do
       let(:value) { nil }
-      it { expect(validator.value1).to eq "" }
+      it { is_expected.to eq "" }
     end
   end
 
   describe "#value2" do
-    let(:validator) { MaximumLengthValidator::Validator.new(nil, value, nil) }
+    subject { validator.value2 }
+
+    let(:article) { build(:article, title: value) }
+    let(:validator) { MaximumLengthValidator::Validator.new(article, nil, { column: :title }) }
 
     context "文字列の場合" do
       let(:value) { "a" * 3 }
-      it { expect(validator.value2).to eq value }
+      it { is_expected.to eq value }
     end
 
     context "数字の場合" do
       let(:value) { 1 }
-      it { expect(validator.value2).to eq "1" }
+      it { is_expected.to eq "1" }
     end
 
     context "nilの場合" do
       let(:value) { nil }
-      it { expect(validator.value2).to eq "" }
+      it { is_expected.to eq "" }
     end
   end
 
   describe "#maximum" do
     subject { validator.maximum }
-    let(:validator) { MaximumLengthValidator::Validator.new(nil, nil, maximum) }
+    let(:validator) { MaximumLengthValidator::Validator.new(nil, nil, { maximum: maximum } ) }
 
     context "指定がある場合" do
       let(:maximum) { 3 }
@@ -100,21 +146,21 @@ RSpec.describe MaximumLengthValidator::Validator, type: :model do
   end
 
   describe "#valid?" do
-    let(:maximum) { 1 }
-    let(:validator) { MaximumLengthValidator::Validator.new(value1, value2, maximum) }
+    let(:article) { build(:article, title: value1, body: value2) }
+    let(:validator) { MaximumLengthValidator::Validator.new(article, value1, { maximum: 1 }) }
 
-    context "validの時" do
+    context "invalidの時" do
       let(:value1) { "" }
       let(:value2) { "" }
 
-      it { expect(validator).to be_valid }
+      it { expect(validator).to be_invalid }
     end
 
-    context "invalidの時" do
+    context "validの時" do
       let(:value1) { "a" * 1 }
       let(:value2) { "b" * 2 }
 
-      it { expect(validator).to be_invalid }
+      it { expect(validator).to be_valid }
     end
   end
 end

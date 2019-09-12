@@ -1,9 +1,8 @@
 class Article < ApplicationRecord
   validates :title, presence: true
   validates :body, presence: true
-  validates :body, maximum_length: { maximum: 10, cloumns: [:title] }
+  validates :body, maximum_length: { maximum: 10, culomn: :title }
   # validate :maximum_length
-
 
   # private
   #
