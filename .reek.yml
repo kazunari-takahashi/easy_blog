@@ -1,0 +1,13 @@
+detectors:
+  IrresponsibleModule:
+    enabled: false
+directories:
+  "app/controllers":
+    InstanceVariableAssumption:
+      enabled: false
+  "admin/app/controllers":
+    InstanceVariableAssumption:
+      enabled: false
+  "biz/app/controllers":
+    InstanceVariableAssumption:
+      enabled: false
